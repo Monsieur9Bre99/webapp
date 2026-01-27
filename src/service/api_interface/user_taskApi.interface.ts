@@ -1,0 +1,65 @@
+import type { iBaseApiResponse } from './_baseApiResponse.interface';
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ASSIGN TASK TO USER
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+export interface iAssignTaskToUserData {
+	task_id: string;
+	user_id: string;
+}
+
+export interface iAssignTaskToUserResponse extends iBaseApiResponse {
+	result: string;
+}
+
+export interface iAssignTaskToUserResult {
+    message: string;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// GET USER TASK
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+export interface iGetUserTaskData {
+	task_id: string;
+}
+
+export interface iGetUserTaskResponse extends iBaseApiResponse {
+	result: {
+		message: string;
+		userTaskList: {
+			user: {
+				id: string;
+				firstname: string;
+				lastname: string;
+				username: string;
+			};
+		}[];
+	};
+}
+
+export interface iGetUserTaskResult {
+	userTaskList: {
+		user: {
+			id: string;
+			firstname: string;
+			lastname: string;
+			username: string;
+		};
+	}[];
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// REMOVE USER TASK
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+export interface iRemoveUserTaskData {
+	task_id: string;
+	user_id: string;
+}
+
+export interface iRemoveUserTaskResponse extends iBaseApiResponse {
+	result: string;
+}
+
+export interface iRemoveUserTaskResult {
+	message: string;
+}

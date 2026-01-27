@@ -1,0 +1,99 @@
+import { type iBaseApiResponse } from './_baseApiResponse.interface';
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  ADD MEMBER TO PROJECT
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+export interface iAddMemberToProjectData {
+	users: {
+		user_id: string;
+		role: 'ADMIN' | 'COLLAB' | 'GUEST';
+	}[];
+}
+
+export interface iAddMemberToProjectResponse extends iBaseApiResponse {
+	result: string;
+}
+
+export interface iAddMemberToProjectResult {
+	message: string;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  GET PROJECT MEMBERS
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+export interface iGetProjectMembersResponse extends iBaseApiResponse {
+	result: {
+		message: string;
+		members:
+			| {
+					id: string;
+					firstname: string;
+					lastname: string;
+					username: string;
+					email: string;
+					role: 'OWNER' | 'ADMIN' | 'COLLAB' | 'GUEST';
+					is_confirmed: boolean;
+			  }[];
+	};
+}
+
+export interface iGetProjectMembersResult {
+	members:
+		| {
+				id: string;
+				firstname: string;
+				lastname: string;
+				username: string;
+				email: string;
+				role: 'OWNER' | 'ADMIN' | 'COLLAB' | 'GUEST';
+				is_confirmed: boolean;
+		  }[];
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  DELETE PROJECT MEMBER
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+export interface iDeleteProjectMemberData {
+	user_id: string;
+}
+
+export interface iDeleteProjectMemberResponse extends iBaseApiResponse {
+	result: string;
+}
+
+export interface iDeleteProjectMemberResult {
+	message: string;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  LEAVE PROJECT
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+export interface iLeaveProjectData {
+	project_id: string;
+}
+
+export interface iLeaveProjectResponse extends iBaseApiResponse {
+	result: string;
+}
+
+export interface iLeaveProjectResult {
+	message: string;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// UPDATE MEMBER ROLE
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+export interface iUpdateMemberRoleData {
+	users: {
+		user_id: string;
+		role: 'OWNER' | 'ADMIN' | 'COLLAB' | 'GUEST';
+	}[];
+}
+
+export interface iUpdateMemberRoleResponse extends iBaseApiResponse {
+	result: string;
+}
+
+export interface iUpdateMemberRoleResult {
+	message: string;
+}
