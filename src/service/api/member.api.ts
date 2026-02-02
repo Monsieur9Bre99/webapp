@@ -1,9 +1,15 @@
 import type { AxiosError } from 'axios';
 import { createApiClient } from '../../hooks/useApi';
 import type {
+	iAcceptInvitationData,
+	iAcceptInvitationResponse,
+	iAcceptInvitationResult,
 	iAddMemberToProjectData,
 	iAddMemberToProjectResponse,
 	iAddMemberToProjectResult,
+	iDeclineInvitationData,
+	iDeclineInvitationResponse,
+	iDeclineInvitationResult,
 	iDeleteProjectMemberData,
 	iDeleteProjectMemberResult,
 	iGetProjectMembersResponse,
@@ -61,9 +67,7 @@ export const getProjectMembers =
 	async (): Promise<iGetProjectMembersResult> => {
 		try {
 			const response = await api.get<iGetProjectMembersResponse>(`member/`);
-			return {
-				members: response.data.result.members,
-			};
+			return { members: response.data.result.members };
 		} catch (error) {
 			const axiosError = error as AxiosError<iBaseApiResponse>;
 
@@ -90,9 +94,7 @@ export const deleteProjectMember = async (
 	try {
 		const response = await api.delete<iDeleteProjectResponse>(
 			`member/delete`,
-			{
-				params: { user_id: data.user_id },
-			},
+			{ params: { user_id: data.user_id } },
 		);
 		return { message: response.data.result };
 	} catch (error) {
@@ -150,6 +152,53 @@ export const updateMemberRole = async (
 		const response = await api.patch<iUpdateMemberRoleResponse>(
 			`member/update_role`,
 			data,
+		);
+		return { message: response.data.result };
+	} catch (error) {
+		const axiosError = error as AxiosError<iBaseApiResponse>;
+
+		if (axiosError.response?.data?.message) {
+			throw new Error(axiosError.response.data.message);
+		}
+
+		throw new Error('Une erreur inconnue est survenue');
+	}
+};
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// DECLINE INVITATION V
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+export const declineInvitation = async (
+	data: iDeclineInvitationData,
+): Promise<iDeclineInvitationResult> => {
+	try {
+		const response = await api.delete<iDeclineInvitationResponse>(
+			`member/decline_invitation`,
+			{ params: { project_id: data.project_id } },
+		);
+		return { message: response.data.result };
+	} catch (error) {
+		const axiosError = error as AxiosError<iBaseApiResponse>;
+
+		if (axiosError.response?.data?.message) {
+			throw new Error(axiosError.response.data.message);
+		}
+
+		throw new Error('Une erreur inconnue est survenue');
+	}
+};
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ACCEPT INVITATION V
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+export const acceptInvitation = async (
+	data: iAcceptInvitationData,
+): Promise<iAcceptInvitationResult> => {
+	try {
+		const response = await api.patch<iAcceptInvitationResponse>(
+			`member/accept_invitation`,
+			{},
+			{ params: { project_id: data.project_id } },
 		);
 		return { message: response.data.result };
 	} catch (error) {

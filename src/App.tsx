@@ -10,7 +10,7 @@ import Login from './pages/login/Login.page';
 import Header from './components/header/Header';
 import ConfirmAccount from './pages/login/Login.ConfirmAccount.page';
 import NotConnected from './guard/NotConnected.guard';
-import Connected from './guard/Connected.guard';
+import ConnectedLayout from './guard/Connected.guard';
 import ForgotPassword from './pages/login/Login.ForgotPassword.page';
 import UpdatePassword from './pages/login/Login.UpdatePassword.page';
 import ProjectLanding from './pages/projectLanding/ProjectLanding.page';
@@ -42,7 +42,7 @@ function App() {
 						element={<Contact />}
 					/>
 
-					<Route element={<Connected />}>
+					<Route element={<ConnectedLayout />}>
 						<Route
 							path='/user'
 							element={<Account />}

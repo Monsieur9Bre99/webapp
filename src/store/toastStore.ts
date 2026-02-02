@@ -2,9 +2,9 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 interface iToastStore {
-	toast: { message: string; type: 'success' | 'error' } | null;
+	toast: { message: string; type: 'success' | 'error' | "info" } | null;
 	setToast: (
-		toast: { message: string; type: 'success' | 'error' } | null,
+		toast: { message: string; type: 'success' | 'error' | "info" } | null,
 	) => void;
 }
 

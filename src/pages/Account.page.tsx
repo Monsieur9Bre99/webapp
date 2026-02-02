@@ -17,8 +17,11 @@ import CreateProjectForm from '../components/userLanding/CreateProjectForm.comp'
 import SearchBar from '../prefab/SearchBar.prefab';
 import FilterSelecter from '../prefab/FilterSelecter.prefab';
 import { projectDataStore } from '../store/projectDataStore';
+import NotificationContainer from '../components/userLanding/Notification.comp';
+import { notificationStore } from '../store/notificationStore';
 
 interface project {
+	is_confirmed: boolean;
 	role: 'OWNER' | 'ADMIN' | 'COLLAB' | 'GUEST';
 	project: {
 		id: string;
@@ -37,6 +40,7 @@ const Account = () => {
 		{ value: 'COLLAB', label: 'collaborateur' },
 		{ value: 'GUEST', label: 'invité' },
 	];
+	const { setNotifications, clearNotifications } = notificationStore();
 	const [filter, setFilter] = useState<string>('all');
 	const [searchedTitle, setSearchedTitle] = useState<string>('');
 	const [projectList, setProjectList] = useState<project[] | null>(null);
@@ -56,13 +60,16 @@ const Account = () => {
 	useEffect(() => {
 		projectDataStore.getState().reset();
 		sessionStorage.removeItem('project_id');
-		if (!firstRender.current) return;
-		firstRender.current = false;
+		if (!firstRender.current) {
+			firstRender.current = false;
+			return;
+		}
 		refetchProjectList();
 	}, []);
 
 	useEffect(() => {
 		if (!userProjectList) return;
+		clearNotifications();
 
 		let filtered = userProjectList.projects;
 
@@ -71,6 +78,10 @@ const Account = () => {
 			filtered = filtered.filter((project) =>
 				project.project.title.toLowerCase().includes(lower),
 			);
+		}
+
+		if (userProjectList?.notifications) {
+			setNotifications(userProjectList.notifications);
 		}
 
 		if (filter !== 'all') {
@@ -110,19 +121,25 @@ const Account = () => {
 							setSearch={setSearchedTitle}
 							placeholder='Rechercher par titre'
 						/>
+						<NotificationContainer
+							refetchProjectList={refetchProjectList}
+						/>
 					</FilterContainer>
 				</PageHeader>
 				<GridContainer
 					$columns='repeat(2, 1fr)'
 					$gap='3rem 1rem'>
-					{projectList?.map((project) => (
-						<ProjectCard
-							key={project.project.id}
-							refetchProjectList={refetchProjectList}
-							role={project.role}
-							project={project.project}
-						/>
-					))}
+					{projectList?.map(
+						(project) =>
+							project.is_confirmed && (
+								<ProjectCard
+									key={project.project.id}
+									refetchProjectList={refetchProjectList}
+									role={project.role}
+									project={project.project}
+								/>
+							),
+					)}
 					<CreateBtn />
 				</GridContainer>
 				<Modal>

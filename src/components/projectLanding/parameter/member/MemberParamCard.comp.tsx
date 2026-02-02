@@ -13,16 +13,14 @@ import Modal from '../../../../prefab/Modal.prefab';
 import AddMember from './AddMember.comp';
 
 const MemberParamCard = () => {
-	const { projectMembers } = projectDataStore();
 	const [allMembers, setAllMembers] = useState<iMemberInfoFormated[]>([]);
-
 	const { data: getMemberQuery, refetch: refetchMembers } = useQuery<
 		iGetProjectMembersResult,
 		Error
 	>({
 		queryKey: ['getProjectMembers'],
 		queryFn: () => getProjectMembers(),
-		enabled: false,
+		enabled: true,
 	});
 
 	useEffect(() => {
@@ -40,20 +38,21 @@ const MemberParamCard = () => {
 			}));
 
 			projectDataStore.getState().setProjectMembers(formatedMembers);
-			setAllMembers([]);
+			setAllMembers(
+				formatedMembers.map((member) => {
+					return {
+						id: member.user.id,
+						firstname: member.user.firstname,
+						lastname: member.user.lastname,
+						email: member.user.email,
+						username: member.user.username,
+						role: member.role,
+						is_confirmed: member.is_confirmed,
+					};
+				}),
+			);
 		}
 	}, [getMemberQuery]);
-
-	useEffect(() => {
-		if (!projectMembers) return;
-		setAllMembers(
-			allMembers
-				.concat(projectMembers.admin)
-				.concat(projectMembers.collab)
-				.concat(projectMembers.guest)
-				.concat(projectMembers.notConfirmed),
-		);
-	}, [projectMembers]);
 
 	return (
 		<ParamCard

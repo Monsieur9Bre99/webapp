@@ -109,8 +109,8 @@ export const projectDataStore = create<iProjectDataStore>((set) => ({
 			};
 
 			if (
-				(memberData.is_confirmed && memberData.role === 'ADMIN') ||
-				memberData.role === 'OWNER'
+				(memberData.is_confirmed && memberData.role === 'ADMIN')
+				|| memberData.role === 'OWNER'
 			)
 				sortedMembers.admin.push(memberData);
 

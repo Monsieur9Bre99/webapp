@@ -28,7 +28,7 @@ import { modalStore } from '../../../../store/modalStore';
 
 interface Props {
 	allMembers: iMemberInfoFormated[];
-	setIsOnUpdate: (isOnUpdate: boolean) => void;
+	setIsOnUpdate: React.Dispatch<React.SetStateAction<boolean>> | undefined;
 	refetchMembers: () => void;
 }
 const MemberUpdate = ({ allMembers, setIsOnUpdate, refetchMembers }: Props) => {
@@ -45,17 +45,19 @@ const MemberUpdate = ({ allMembers, setIsOnUpdate, refetchMembers }: Props) => {
 		mutationKey: ['deleteMember'],
 		mutationFn: (data) => deleteProjectMember(data),
 		onSuccess: () => {
-			toastStore.getState().setToast({
-				message: 'Membre supprimé',
-				type: 'success',
-			});
+			toastStore
+				.getState()
+				.setToast({ message: 'Membre supprimé', type: 'success' });
 			refetchMembers();
 		},
 		onError: () => {
-			toastStore.getState().setToast({
-				message: 'Une erreur est survenue lors de la suppression du membre',
-				type: 'error',
-			});
+			toastStore
+				.getState()
+				.setToast({
+					message:
+						'Une erreur est survenue lors de la suppression du membre',
+					type: 'error',
+				});
 		},
 	});
 
@@ -64,7 +66,7 @@ const MemberUpdate = ({ allMembers, setIsOnUpdate, refetchMembers }: Props) => {
 		e.preventDefault();
 
 		if (updateRole.length === 0) {
-			if (isOpen) {
+			if (isOpen && setIsOnUpdate) {
 				setIsOnUpdate(false);
 				setIsOpen(false);
 			}
@@ -87,13 +89,16 @@ const MemberUpdate = ({ allMembers, setIsOnUpdate, refetchMembers }: Props) => {
 			toastStore
 				.getState()
 				.setToast({ message: 'Role mis à jour', type: 'success' });
-			setIsOnUpdate(false);
+			if (setIsOnUpdate) setIsOnUpdate(false);
 		},
 		onError: () => {
-			toastStore.getState().setToast({
-				message: 'Une erreur est survenue lors de la mise à jour du role',
-				type: 'error',
-			});
+			toastStore
+				.getState()
+				.setToast({
+					message:
+						'Une erreur est survenue lors de la mise à jour du role',
+					type: 'error',
+				});
 		},
 	});
 
@@ -120,8 +125,8 @@ const MemberUpdate = ({ allMembers, setIsOnUpdate, refetchMembers }: Props) => {
 			id='member-update-form'
 			onSubmit={(e) => onSubmit(e)}>
 			<ParamCardContent>
-				{allMembers &&
-					allMembers.map((member) => {
+				{allMembers
+					&& allMembers.map((member) => {
 						const role = getCurrentRole(
 							member.id as string,
 							member.role as string,
@@ -162,14 +167,16 @@ const MemberUpdate = ({ allMembers, setIsOnUpdate, refetchMembers }: Props) => {
 									type='button'
 									disabled={member?.role === 'OWNER'}
 									onClick={() => {
-										popupStore.getState().setPopup({
-											message:
-												'Êtes-vous sûr de vouloir supprimer ce membre ?',
-											action: () =>
-												deleteMemberQuery.mutate({
-													user_id: member.id,
-												}),
-										});
+										popupStore
+											.getState()
+											.setPopup({
+												message:
+													'Êtes-vous sûr de vouloir supprimer ce membre ?',
+												action: () =>
+													deleteMemberQuery.mutate({
+														user_id: member.id,
+													}),
+											});
 									}}>
 									<X />
 								</ParamCardDeleteBtn>

@@ -3,21 +3,18 @@ import { breakpoints, color, typography } from '../style/variable.style';
 import { adjustColorBrightness, hexToRgba } from '../utils/colorFunc';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { toastStore } from '../store/toastStore';
 
 const Toast = () => {
 	const toastRef = useRef<HTMLDivElement>(null);
 	const { toast } = toastStore();
+	const [colorTxt, setColorTxt] = useState<string>('');
 
 	useGSAP(() => {
 		if (toast) {
 			gsap.set(toastRef.current, { x: '100%', autoAlpha: 0 });
-			gsap.to(toastRef.current, {
-				autoAlpha: 1,
-				x: 0,
-				duration: 0.5,
-			});
+			gsap.to(toastRef.current, { autoAlpha: 1, x: 0, duration: 0.5 });
 
 			gsap.to(toastRef.current, {
 				autoAlpha: 0,
@@ -30,6 +27,14 @@ const Toast = () => {
 
 	useEffect(() => {
 		if (toast) {
+			if (toast.type === 'success') {
+				setColorTxt(color.success);
+			} else if (toast.type === 'error') {
+				setColorTxt(color.error);
+			} else {
+				setColorTxt(color.dark);
+			}
+
 			const timer = setTimeout(() => {
 				toastStore.getState().setToast(null);
 			}, 2500);
@@ -40,10 +45,7 @@ const Toast = () => {
 	if (toast) {
 		return (
 			<ToastContainer ref={toastRef}>
-				<ToastMessage
-					color={toast.type === 'success' ? color.success : color.error}>
-					{toast.message}
-				</ToastMessage>
+				<ToastMessage color={colorTxt}>{toast.message}</ToastMessage>
 			</ToastContainer>
 		);
 	}

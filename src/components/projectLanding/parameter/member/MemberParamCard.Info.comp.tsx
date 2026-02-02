@@ -12,8 +12,8 @@ interface Props {
 const MemberInfo = ({ allMembers }: Props) => {
 	return (
 		<ParamCardContent>
-			{allMembers &&
-				allMembers.map((member) => (
+			{allMembers
+				&& allMembers.map((member) => (
 					<ParamCardRow
 						key={member.id}
 						$columns='20% 35% 19% 15% 11%'>

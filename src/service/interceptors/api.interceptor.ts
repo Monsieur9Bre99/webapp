@@ -1,6 +1,6 @@
 import { authStore } from '../../store/authStore';
 import type { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
-import type { iSigninResponse } from '../api_interface/authApi.interface';
+import type { iSigninUserResponse } from '../api_interface/authApi.interface';
 
 declare module 'axios' {
 	export interface InternalAxiosRequestConfig {
@@ -28,7 +28,7 @@ export const addAuthInterceptors = (api: AxiosInstance) => {
 						originalRequest._retry = true;
 						if (userId) {
 							try {
-								const response = await api.patch<iSigninResponse>(
+								const response = await api.patch<iSigninUserResponse>(
 									`auth/refresh/`,
 									{},
 									{ withCredentials: true },

@@ -4,10 +4,7 @@ import { type iBaseApiResponse } from './_baseApiResponse.interface';
 //  ADD MEMBER TO PROJECT
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export interface iAddMemberToProjectData {
-	users: {
-		user_id: string;
-		role: 'ADMIN' | 'COLLAB' | 'GUEST';
-	}[];
+	users: { user_id: string; role: 'ADMIN' | 'COLLAB' | 'GUEST' }[];
 }
 
 export interface iAddMemberToProjectResponse extends iBaseApiResponse {
@@ -24,30 +21,28 @@ export interface iAddMemberToProjectResult {
 export interface iGetProjectMembersResponse extends iBaseApiResponse {
 	result: {
 		message: string;
-		members:
-			| {
-					id: string;
-					firstname: string;
-					lastname: string;
-					username: string;
-					email: string;
-					role: 'OWNER' | 'ADMIN' | 'COLLAB' | 'GUEST';
-					is_confirmed: boolean;
-			  }[];
+		members: {
+			id: string;
+			firstname: string;
+			lastname: string;
+			username: string;
+			email: string;
+			role: 'OWNER' | 'ADMIN' | 'COLLAB' | 'GUEST';
+			is_confirmed: boolean;
+		}[];
 	};
 }
 
 export interface iGetProjectMembersResult {
-	members:
-		| {
-				id: string;
-				firstname: string;
-				lastname: string;
-				username: string;
-				email: string;
-				role: 'OWNER' | 'ADMIN' | 'COLLAB' | 'GUEST';
-				is_confirmed: boolean;
-		  }[];
+	members: {
+		id: string;
+		firstname: string;
+		lastname: string;
+		username: string;
+		email: string;
+		role: 'OWNER' | 'ADMIN' | 'COLLAB' | 'GUEST';
+		is_confirmed: boolean;
+	}[];
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,10 +79,7 @@ export interface iLeaveProjectResult {
 // UPDATE MEMBER ROLE
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export interface iUpdateMemberRoleData {
-	users: {
-		user_id: string;
-		role: 'OWNER' | 'ADMIN' | 'COLLAB' | 'GUEST';
-	}[];
+	users: { user_id: string; role: 'OWNER' | 'ADMIN' | 'COLLAB' | 'GUEST' }[];
 }
 
 export interface iUpdateMemberRoleResponse extends iBaseApiResponse {
@@ -95,5 +87,35 @@ export interface iUpdateMemberRoleResponse extends iBaseApiResponse {
 }
 
 export interface iUpdateMemberRoleResult {
+	message: string;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// DECLINE INVITATION
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+export interface iDeclineInvitationData {
+	project_id: string;
+}
+
+export interface iDeclineInvitationResponse extends iBaseApiResponse {
+	result: string;
+}
+
+export interface iDeclineInvitationResult {
+	message: string;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ACCEPT INVITATION INVITATION
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+export interface iAcceptInvitationData {
+	project_id: string;
+}
+
+export interface iAcceptInvitationResponse extends iBaseApiResponse {
+	result: string;
+}
+
+export interface iAcceptInvitationResult {
 	message: string;
 }

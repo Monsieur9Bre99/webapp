@@ -30,11 +30,7 @@ const AddMember = ({ refetchMembers }: Props) => {
 	const { isOpen } = modalStore();
 	const [searchUsername, setSearchUsername] = useState<string>('');
 	const [invited, setInvited] = useState<
-		{
-			id: string;
-			username: string;
-			role: 'ADMIN' | 'COLLAB' | 'GUEST';
-		}[]
+		{ id: string; username: string; role: 'ADMIN' | 'COLLAB' | 'GUEST' }[]
 	>([]);
 	const { closeModal } = modalStore();
 
@@ -83,20 +79,15 @@ const AddMember = ({ refetchMembers }: Props) => {
 					? {
 							...user,
 							role: e.target.value as 'ADMIN' | 'COLLAB' | 'GUEST',
-					  }
+						}
 					: user,
 			),
 		);
 	};
 
 	const handleSubmit = () => {
-		const users: {
-			user_id: string;
-			role: 'ADMIN' | 'COLLAB' | 'GUEST';
-		}[] = invited.map((user) => ({
-			user_id: user.id,
-			role: user.role,
-		}));
+		const users: { user_id: string; role: 'ADMIN' | 'COLLAB' | 'GUEST' }[] =
+			invited.map((user) => ({ user_id: user.id, role: user.role }));
 
 		addMemberQuery.mutate({ users: users });
 	};
@@ -114,10 +105,12 @@ const AddMember = ({ refetchMembers }: Props) => {
 			refetchMembers();
 		},
 		onError: () => {
-			toastStore.getState().setToast({
-				message: "Une erreur est survenue lors de l'ajout du membre",
-				type: 'error',
-			});
+			toastStore
+				.getState()
+				.setToast({
+					message: "Une erreur est survenue lors de l'ajout du membre",
+					type: 'error',
+				});
 		},
 	});
 
@@ -138,8 +131,8 @@ const AddMember = ({ refetchMembers }: Props) => {
 			<UserListContainer>
 				<UserList>
 					{filteredUsers.map((user) => (
-						<NotInvitedListItem>
-							<Text key={user.id}>{user.username}</Text>
+						<NotInvitedListItem key={user.id}>
+							<Text>{user.username}</Text>
 							<IconBtn
 								onClick={() => addInvitation(user.id, user.username)}
 								$color={color.success}
@@ -153,7 +146,7 @@ const AddMember = ({ refetchMembers }: Props) => {
 			<UserListContainer>
 				<UserList>
 					{invited.map((user) => (
-						<InvitedListItem>
+						<InvitedListItem key={user.id}>
 							<Text>{user.username}</Text>
 							<Select
 								id={`role-${user.id}`}

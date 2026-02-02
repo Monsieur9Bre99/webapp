@@ -1,3 +1,4 @@
+import type { Notification } from '../../store/notificationStore';
 import type { iBaseApiResponse } from './_baseApiResponse.interface';
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -10,6 +11,7 @@ export interface iGetUserResponse extends iBaseApiResponse {
 			firstname: string;
 			lastname: string;
 			projects: {
+				is_confirmed: boolean;
 				role: 'OWNER' | 'ADMIN' | 'COLLAB' | 'GUEST';
 				project: {
 					id: string;
@@ -19,6 +21,7 @@ export interface iGetUserResponse extends iBaseApiResponse {
 					date_end: Date;
 				};
 			}[];
+			notifications: Notification[];
 		};
 	};
 }
@@ -27,6 +30,7 @@ export interface iGetUserResult {
 	firstname: string;
 	lastname: string;
 	projects: {
+		is_confirmed: boolean;
 		role: 'OWNER' | 'ADMIN' | 'COLLAB' | 'GUEST';
 		project: {
 			id: string;
@@ -36,20 +40,17 @@ export interface iGetUserResult {
 			date_end: Date;
 		};
 	}[];
+	notifications: Notification[];
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // GET ALL USERS
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export interface iGetAllUsersResponse extends iBaseApiResponse {
-	result: {
-		message: string;
-		users: { id: string; username: string }[];
-	};
+	result: { message: string; users: { id: string; username: string }[] };
 }
 
 export interface iGetAllUsersResult {
 	id: string;
 	username: string;
 }
-
