@@ -21,7 +21,7 @@ import { Textarea } from '../../../../prefab/input/TexrArea.prefab';
 import { BaseInput } from '../../../../prefab/input/BaseInput.prefab';
 
 interface Props {
-	setIsOnUpdate: (isOnUpdate: boolean) => void;
+	setIsOnUpdate: React.Dispatch<React.SetStateAction<boolean>> | undefined;
 }
 
 const ProjectUpdate = ({ setIsOnUpdate }: Props) => {
@@ -41,17 +41,19 @@ const ProjectUpdate = ({ setIsOnUpdate }: Props) => {
 	const onSubmit = async (data: iUpdateProject): Promise<void> => {
 		setIsOpen(true);
 		const sameStart =
-			dateFormat(data.date_start, 'dd/mm/yyyy') ===
-			dateFormat(projectInfo?.date_start, 'dd/mm/yyyy');
+			dateFormat(data.date_start, 'dd/mm/yyyy')
+			=== dateFormat(projectInfo?.date_start, 'dd/mm/yyyy');
 		const sameEnd =
-			dateFormat(data.date_end, 'dd/mm/yyyy') ===
-			dateFormat(projectInfo?.date_end, 'dd/mm/yyyy');
+			dateFormat(data.date_end, 'dd/mm/yyyy')
+			=== dateFormat(projectInfo?.date_end, 'dd/mm/yyyy');
 		const sameTitle = data.title === projectInfo?.title;
 		const sameDescription = data.description === projectInfo?.description;
 
 		if (sameStart && sameEnd && sameTitle && sameDescription) {
 			if (isOpen) {
-				setIsOnUpdate(false);
+				if (setIsOnUpdate) {
+					setIsOnUpdate(false);
+				}
 				setIsOpen(false);
 			}
 			return;
@@ -70,13 +72,18 @@ const ProjectUpdate = ({ setIsOnUpdate }: Props) => {
 		mutationFn: (data) => updateProject(data),
 		onSuccess: (res) => {
 			projectDataStore.getState().setProjectInfo(res);
-			setIsOnUpdate(false);
+			if (setIsOnUpdate) {
+				setIsOnUpdate(false);
+			}
 		},
 		onError: () => {
-			toastStore.getState().setToast({
-				message: 'Une erreur est survenue lors de la mise a jour du projet',
-				type: 'error',
-			});
+			toastStore
+				.getState()
+				.setToast({
+					message:
+						'Une erreur est survenue lors de la mise a jour du projet',
+					type: 'error',
+				});
 		},
 	});
 
@@ -134,8 +141,8 @@ const ProjectUpdate = ({ setIsOnUpdate }: Props) => {
 						id='description'
 						label='Description :'
 						placeholder={
-							projectInfo?.description ||
-							'Aucune description pour le moment.'
+							projectInfo?.description
+							|| 'Aucune description pour le moment.'
 						}
 					/>
 				</GridCell>

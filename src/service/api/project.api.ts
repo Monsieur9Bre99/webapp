@@ -83,9 +83,7 @@ export const deleteProject = async (
 	try {
 		const response = await api.delete<iDeleteProjectResponse>(
 			`project/delete`,
-			{
-				params: project_id && { project_id },
-			},
+			{ params: project_id && { project_id } },
 		);
 		return { message: response.data.result };
 	} catch (error) {

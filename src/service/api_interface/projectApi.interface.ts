@@ -38,11 +38,11 @@ export interface iGetProjectResponse extends iBaseApiResponse {
 				priority: 'LOW' | 'MEDIUM' | 'HIGH';
 				statuts: 'BACKLOG' | 'TODO' | 'ON_GOING' | 'ON_TEST' | 'FINISHED';
 				image?: string | null;
-				date_start: Date;
+				date_start: Date | null;
 				delay: number;
 				worked_time: number;
-				date_end: Date;
-				task_category_id: string;
+				date_end: Date | null;
+				task_category: { id: string; title: string };
 				subtasks: { id: string; description: string; is_done: boolean }[];
 				user_assigned: {
 					user: {

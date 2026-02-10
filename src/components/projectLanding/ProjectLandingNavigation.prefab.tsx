@@ -2,14 +2,7 @@ import styled from 'styled-components';
 import { color, typography, breakpoints } from '../../style/variable.style';
 import { NavLink } from 'react-router-dom';
 import { displayStore } from '../../store/displayStore';
-import {
-	FileText,
-	Kanban,
-	LayoutDashboard,
-	Logs,
-	MessagesSquare,
-	Settings,
-} from 'lucide-react';
+import { Kanban, LayoutDashboard, Logs, Settings } from 'lucide-react';
 import { projectDataStore } from '../../store/projectDataStore';
 
 const ProjectLandingNavigation = () => {
